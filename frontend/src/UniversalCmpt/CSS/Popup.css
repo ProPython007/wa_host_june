@@ -1,0 +1,27 @@
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1120;
+}
+
+.popup-main {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    position: relative;
+    border: 2px #000 solid;
+}
+
+.closeIcon{
+    position: absolute;
+    top: -35%;
+    right: -10%;
+    color: red;
+}

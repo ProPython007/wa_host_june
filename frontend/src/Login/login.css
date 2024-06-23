@@ -1,0 +1,180 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 100dvw;
+    height: 100dvh;
+    background: linear-gradient(90deg, #b3aef8, #dcf8c6);
+}
+
+.login {
+    width: 90%;
+    padding: 10%;  
+    padding-top: 21%;
+}
+
+.login__field {
+    padding: 2rem 0px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 50%;
+}
+
+.login__icon {
+    position: absolute;
+}
+
+.login__input {
+    border: none;
+    border-bottom: 2px solid #d1d1d4;
+    background: none;
+    padding: .5rem;
+    padding-left: 2.4rem;
+    font-weight: 700;
+    width: 75%;
+    transition: 0.2s;
+}
+
+.login__input:active,
+.login__input:focus,
+.login__input:hover {
+    outline: none;
+    border-bottom-color: #5d54a4;
+}
+
+.footerText{
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    flex-direction: column;
+    gap: .5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.footerText .fp{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: .3rem;
+}
+
+.danger{
+    padding-top: 2%;
+    color: red;
+}
+
+.login__submit {
+    background: #fff;
+    font-size: 1.1rem;
+    margin-top: 3rem;
+    padding: .9rem 1.6rem;
+    border-radius: 10px;
+    border: 1px solid #d4d3e8;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    width: 85%;
+    box-shadow: 0px 2px 2px #5d54a4;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.login__submit:active,
+.login__submit:focus,
+.login__submit:hover {
+    border-color: #5d54a4;
+    outline: none;
+}
+
+.button__icon {
+    font-size: 2.4rem;
+    margin-left: auto;
+}
+
+.screen {
+    background: linear-gradient(90deg, #5d54a4, #dcf8c6);
+    position: relative;
+    height: 70vh;
+    width: 25vw;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.screen__content {
+    z-index: 1;
+    position: relative;
+    height: 100%;
+}
+
+.screen__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    -webkit-clip-path: inset(0 0 0 0);
+    clip-path: inset(0 0 0 0);
+}
+
+.screen__background__shape {
+    transform: rotate(45deg);
+    position: absolute;
+}
+
+.screen__background__shape1 {
+    height: 520px;
+    width: 520px;
+    background: #fff;
+    top: -50px;
+    right: 120px;
+    border-radius: 0 72px 0 0;
+}
+
+.screen__background__shape2 {
+    height: 220px;
+    width: 220px;
+    background: linear-gradient(220deg, #b4abff, #dcf8c6);
+    top: -172px;
+    right: 0;
+    border-radius: 32px;
+}
+
+.screen__background__shape3 {
+    height: 540px;
+    width: 190px;
+    background: linear-gradient(270deg, #5d54a4, #dcf8c6);
+    top: -24px;
+    right: 0;
+    border-radius: 32px;
+}
+
+.screen__background__shape4 {
+    height: 400px;
+    width: 200px;
+    background: linear-gradient(270deg, #dcf8c6, #b4abff);
+    top: 420px;
+    right: 50px;
+    border-radius: 60px;
+}
+
+.fadeOut {
+    opacity: 0;
+}
+
+.fadeIn {
+    opacity: 1;
+    transition: all 1s;
+    -webkit-transition: all 1s;
+    -moz-transition: all 1s;
+    -ms-transition: all 1s;
+    -o-transition: all 1s;
+}

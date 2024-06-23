@@ -1,0 +1,56 @@
+.chatFooterElements {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.vrContainer {
+    /* box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.25), inset 0px 0px 0px 1px rgba(255, 255, 255, 0.1); */
+    width: 80%;
+    height: 2rem;
+}
+
+.delNrp{
+    gap: 0;
+}
+.recording {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1%;
+}
+
+.animationContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 2%;
+}
+.recordingAnimation{
+
+    background-color: red;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    animation: recordingAnimation 1s infinite;
+    margin-right: 5px;
+}
+
+@keyframes recordingAnimation {
+    0%{
+        background-color: rgba(255, 0, 0, 0.258);
+    }
+    15%{
+        background-color: rgba(255, 0, 0, 0.409);
+    }
+    25%{
+        background-color: rgba(133, 1, 1, 0.612);
+    }
+    50%{
+        background-color: rgba(255, 0, 0, 0.797);
+    }
+    100%{
+        background-color: rgba(255, 0, 0, 0.936);
+    }
+}

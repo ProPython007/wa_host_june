@@ -1,0 +1,50 @@
+.range {
+    position: relative;
+    background-color: #000000;
+    width: 70%;
+    height: 10%;
+    font-family: "Orbitron", monospace;
+    margin-top: 6%;
+    border: 2px solid #000;
+    border-radius: 20px;
+}
+
+.ProgressContainer .range{
+    margin: 0;
+    background-color: #1b1b1b80;
+}
+
+.range:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(var(--p) * 1%);
+    border-radius: 20px;
+    height: 100%;
+    background-color: #e5e5e5;
+    z-index: 0;
+    -webkit-animation: load 0.5s forwards linear, glitch 2s infinite linear;
+    animation: load 0.5s forwards linear, glitch 2s infinite linear;
+}
+
+.range:after {
+    counter-reset: progress var(--p);
+    content: counter(progress) "%";
+    color: #000;
+    position: absolute;
+    left: 5%;
+    top: 50%;
+    transform: translateY(-50%) skewX(-30deg);
+    z-index: 1;
+}
+
+.range__label {
+    text-align: left;
+    transform:  translateY(-100%);
+    line-height: 1.5;
+}
+
+.ProgressContainer .range__label{
+    transform: translateY(100%);
+}

@@ -1,0 +1,13 @@
+import subprocess
+# 'C:\ProgramData\chocolatey\lib\ffmpeg-full\tools'
+input_video = '86220_5.mp4'
+output_video = 'output_video_compressed.mp4'
+
+# Command to compress video using ffmpeg
+# ffmpeg_command = f'ffmpeg -i {input_video} -vf "scale=1280:-2" -b:v 1M {output_video}'
+
+ffmpeg_command = f'ffmpeg -i {input_video} -vf "scale=1280:-2" -c:v libx265 -crf 23 -b:v 1M -c:a aac -b:a 128k {output_video}'
+
+
+# Execute the ffmpeg command
+subprocess.run(ffmpeg_command, shell=True)

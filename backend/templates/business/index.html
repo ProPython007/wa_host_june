@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+</head>
+<body>
+    {% load static %} <!-- Include this line to load the static template tag library -->
+    <h1>Welcome to Ledstore
+        <a href="{% static 'business/uploads/images/Screenshot.png' %}" download>Download Image</a>
+        <img src="{% static 'business/uploads/images/qr.png' %}" >
+
+    </h1>
+</body>
+</html>

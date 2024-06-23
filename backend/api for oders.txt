@@ -1,0 +1,79 @@
+abandoned_checkout 
+
+curl --location 'https://django.casualfootwears.com/wp-send-template-api-for-website/' \
+--header 'Content-Type: application/json' \
+--data '{"name": "max",
+"template_name": "abandoned_checkout",
+"media_type": "jg",
+"to_number": "919956929372",
+"from_number" : "1212121",
+"from_id" : 1212,
+"components": ["parameter1","parameter2","parameter3","parameter4"]}'
+
+
+=================================================
+shipped
+=================================================
+
+curl -X POST https://django.casualfootwears.com/wp-send-template-api-for-website/ \
+-H "Content-Type: multipart/form-data" \
+-F "template_name=shipped" \
+-F "profile_name=max" \
+-F "to_number=919956929372" \
+-F "components=test1" \
+-F "components=test21" \
+-F "components=test31" \
+-F "components=as" \
+-F "components=test1" \
+-F "components=test21" \
+-F "components=test31" \
+-F "components=as" \
+-F "media_type=test" \
+-F "media=@22121.mp4"
+
+
+
+=================================================
+cancelled
+=================================================
+
+curl -X POST https://django.casualfootwears.com/wp-send-template-api-for-website/ \
+-H "Content-Type: multipart/form-data" \
+-F "template_name=shipped" \
+-F "profile_name=max" \
+-F "to_number=919956929372" \
+-F "components=test1" \
+-F "components=test21" \
+-F "components=test31" \
+-F "media_type=test" \
+-F "video=@22121.mp4"
+
+
+
+=================================================
+order_confirmation
+=================================================
+
+curl -X POST https://django.casualfootwears.com/wp-send-template-api-for-website/ \
+-H "Content-Type: multipart/form-data" \
+-F "template_name=shipped" \
+-F "profile_name=max" \
+-F "to_number=919956929372" \
+-F "components=test1" \
+-F "components=test2" \
+-F "components=test3" \
+-F "components=test4" \
+-F "components=test5" \
+-F "components=test6" \
+-F "components=test7" \
+-F "components=test8" \
+-F "components=test9" \
+-F "components=test10" \
+-F "components=test11" \
+-F "components=test12" \
+-F "components=test13" \
+-F "components=test14" \
+-F "components=test15" \
+-F "components=test16" \
+-F "media_type=test" \
+-F "media=@22121.mp4"

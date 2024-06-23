@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700");
+
+.btnContainer{
+    position: fixed;
+    top: 8%;
+    right: 1%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    z-index: 999;
+}
+
+.multi-button {
+    border-radius: 6px;
+    font-size: 0;
+    z-index: 999;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+
+.multi-button button {
+    font-family: Lato, sans-serif;
+    outline: none;
+    font-weight: bold;
+    background-color: #eeeeee;
+    border: none;
+    color: #222222;
+    cursor: pointer;
+    padding: 1rem;
+    transition: background-color .4s;
+}
+
+button:hover {
+    background-color: #dddddd;
+    transform: translate(0, 1px);
+}
+
+button:active {
+    background-color: #cccccc;
+    transform: translate(0, 2px);
+}
+
+
+.outer-left {
+    border-radius: 6px 0 0 6px;
+}
+
+.outer-right {
+    border-radius: 0 6px 6px 0;
+}
+
+.displayNone{
+    display: none;
+}
+
+.icon{
+    cursor: pointer;
+}

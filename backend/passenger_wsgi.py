@@ -1,0 +1,1 @@
+from max_app_prooj.wsgi import application

@@ -1,0 +1,441 @@
+
+            <html>
+                
+            <head>
+                <title> Chat Transcript </title>
+                
+            <script src="https://cdn.botframework.com/botframework-webchat/4.15.7/webchat.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.0/rxjs.umd.min.js" integrity="sha512-v0/YVjBcbjLN6scjmmJN+h86koeB7JhY4/2YeyA5l+rTdtKLv0VbDBNJ32rxJpsaW1QGMd1Z16lsLOSGI38Rbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+            <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js" integrity="sha256-hNyljag6giCsjv/yKmxK8/VeHzvMDvc5u8AzmRvm1BI=" crossorigin="anonymous"></script>
+        
+                <script>
+                    function shareObservable(observable) {
+                        let observers = [];
+                        let subscription;
+
+                        return new Observable(observer => {
+                            if (!subscription) {
+                                subscription = observable.subscribe({
+                                    complete() {
+                                        observers.forEach(observer => observer.complete());
+                                    },
+                                    error(err) {
+                                        observers.forEach(observer => observer.error(err));
+                                    },
+                                    next(value) {
+                                        observers.forEach(observer => observer.next(value));
+                                    }
+                                });
+                            }
+
+                            observers.push(observer);
+
+                            return () => {
+                                observers = observers.filter(o => o !== observer);
+
+                                if (!observers.length) {
+                                    subscription.unsubscribe();
+                                    subscription = null;
+                                }
+                            };
+                        });
+                    }
+                </script>
+                <script>
+                    const messages = [{"created":"2023-10-21T13:19:59+00:00","isControlMessage":false,"content":"hostinger.com","contentType":"text","createdDateTime":"2023-10-21T13:19:59+00:00","deleted":false,"from":{"application":{"displayName":"Customer","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000001b-f11f-4a28-6763-563a0d00b45e"}},"attachments":[],"id":"1697894399084","deliveryMode":"bridged","widgetId":"77ed5868-6618-49fb-be79-ec72abaf47b3","clientActivityId":"hwoz7gxvf2h","tags":"ChannelId-lcw,FromCustomer"},{"created":"2023-10-21T13:19:46+00:00","isControlMessage":false,"content":"so where is your domain hosted? is it Godaddy?","contentType":"text","createdDateTime":"2023-10-21T13:19:46+00:00","deleted":false,"from":{"user":{"displayName":"Samuel Asiedu","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000000f-6d97-5b88-defd-8b3a0d00d36b"}},"attachments":[],"id":"1697894386734","tags":"public","deliveryMode":"bridged"},{"created":"2023-10-21T13:19:25+00:00","isControlMessage":false,"content":"ok so i was the one who called and because you cant speak English i will try and help here","contentType":"text","createdDateTime":"2023-10-21T13:19:25+00:00","deleted":false,"from":{"user":{"displayName":"Samuel Asiedu","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000000f-6d97-5b88-defd-8b3a0d00d36b"}},"attachments":[],"id":"1697894365976","tags":"public","deliveryMode":"bridged"},{"created":"2023-10-21T13:17:00+00:00","isControlMessage":false,"content":"+919956929372","contentType":"text","createdDateTime":"2023-10-21T13:17:00+00:00","deleted":false,"from":{"application":{"displayName":"Customer","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000001b-f11f-4a28-6763-563a0d00b45e"}},"attachments":[],"id":"1697894220447","deliveryMode":"bridged","widgetId":"77ed5868-6618-49fb-be79-ec72abaf47b3","clientActivityId":"putt6rbss1q","tags":"ChannelId-lcw,FromCustomer"},{"created":"2023-10-21T13:16:40+00:00","isControlMessage":false,"content":"sure, u can call at 9956929372","contentType":"text","createdDateTime":"2023-10-21T13:16:40+00:00","deleted":false,"from":{"application":{"displayName":"Customer","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000001b-f11f-4a28-6763-563a0d00b45e"}},"attachments":[],"id":"1697894200122","deliveryMode":"bridged","widgetId":"77ed5868-6618-49fb-be79-ec72abaf47b3","clientActivityId":"hax676ewfij","tags":"ChannelId-lcw,FromCustomer"},{"created":"2023-10-21T13:16:15+00:00","isControlMessage":false,"content":"Is it ok to go on a call to help you resolve? Kindly share your email and contact with country code so i can call and please dont close the chat as i will be sharing other info here","contentType":"text","createdDateTime":"2023-10-21T13:16:15+00:00","deleted":false,"from":{"user":{"displayName":"Samuel Asiedu","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000000f-6d97-5b88-defd-8b3a0d00d36b"}},"attachments":[],"id":"1697894175658","tags":"public","deliveryMode":"bridged"},{"created":"2023-10-21T13:15:52+00:00","isControlMessage":false,"content":"Add this TXT record to help prevent spam\nView detailed instructions for this record\nTXT name (leave blank if not supported)\tTXT value\tTTL\tStatus\nExpected\t@ \nv=spf1 include:spf.protection.outlook.com -all \n1 Hour \n You can only have one SPF record.How do I combine the records?\nActual\t@\tv=spf1 include:spf.protection.outlook.com -all\t14400 seconds\t Too many records\nActual\t@\tv=spf1 include:_spf.mail.hostinger.com ~all\t14400 seconds\t Too many records","contentType":"text","createdDateTime":"2023-10-21T13:15:52+00:00","deleted":false,"from":{"application":{"displayName":"Customer","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000001b-f11f-4a28-6763-563a0d00b45e"}},"attachments":[],"id":"1697894152816","deliveryMode":"bridged","widgetId":"77ed5868-6618-49fb-be79-ec72abaf47b3","clientActivityId":"o9reshjvku","tags":"ChannelId-lcw,FromCustomer"},{"created":"2023-10-21T13:14:23+00:00","isControlMessage":false,"content":"if i may ask which error are you getting and where is your domain hosted?","contentType":"text","createdDateTime":"2023-10-21T13:14:23+00:00","deleted":false,"from":{"user":{"displayName":"Samuel Asiedu","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000000f-6d97-5b88-defd-8b3a0d00d36b"}},"attachments":[],"id":"1697894063553","tags":"public","deliveryMode":"bridged"},{"created":"2023-10-21T13:13:48+00:00","isControlMessage":false,"content":"pls help","contentType":"text","createdDateTime":"2023-10-21T13:13:48+00:00","deleted":false,"from":{"application":{"displayName":"Customer","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000001b-f11f-4a28-6763-563a0d00b45e"}},"attachments":[],"id":"1697894028304","deliveryMode":"bridged","widgetId":"77ed5868-6618-49fb-be79-ec72abaf47b3","clientActivityId":"gaw6w3klqdt","tags":"ChannelId-lcw,FromCustomer"},{"created":"2023-10-21T13:13:14+00:00","isControlMessage":false,"content":"sorry about the issue and i will be glad to assist","contentType":"text","createdDateTime":"2023-10-21T13:13:14+00:00","deleted":false,"from":{"user":{"displayName":"Samuel Asiedu","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000000f-6d97-5b88-defd-8b3a0d00d36b"}},"attachments":[],"id":"1697893994265","tags":"public","deliveryMode":"bridged"},{"created":"2023-10-21T13:12:49+00:00","isControlMessage":false,"content":"Hello, \n\nI'm Samuel, your Microsoft Business Advisor. I'm here to answer your questions and help you achieve your business goals.  How can I help you today?","contentType":"text","createdDateTime":"2023-10-21T13:12:49+00:00","deleted":false,"from":{"user":{"displayName":"Samuel Asiedu","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000000f-6d97-5b88-defd-8b3a0d00d36b"}},"attachments":[],"id":"1697893969900","tags":"public","deliveryMode":"bridged"},{"created":"2023-10-21T13:12:45+00:00","isControlMessage":false,"content":"Samuel Asiedu has joined the conversation.","contentType":"text","createdDateTime":"2023-10-21T13:12:45+00:00","deleted":false,"from":{"user":{"displayName":"","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_00000011-96b1-f18c-3dfe-9c3a0d007284"}},"attachments":[],"id":"1697893965995","tags":"system,agentaccepted","fromUserId":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000001b-f11f-4a28-6763-563a0d00b45e"},{"created":"2023-10-21T13:12:42+00:00","isControlMessage":false,"content":"I am unable to setup txt record for some reasons","contentType":"text","createdDateTime":"2023-10-21T13:12:42+00:00","deleted":false,"from":{"application":{"displayName":"Customer","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000001b-f11f-4a28-6763-563a0d00b45e"}},"attachments":[],"id":"1697893962713","deliveryMode":"bridged","widgetId":"77ed5868-6618-49fb-be79-ec72abaf47b3","clientActivityId":"7005knuae6o","tags":"ChannelId-lcw,FromCustomer"},{"created":"2023-10-21T13:12:17+00:00","isControlMessage":false,"content":"HI","contentType":"text","createdDateTime":"2023-10-21T13:12:17+00:00","deleted":false,"from":{"application":{"displayName":"Customer","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000001b-f11f-4a28-6763-563a0d00b45e"}},"attachments":[],"id":"1697893937466","deliveryMode":"bridged","widgetId":"77ed5868-6618-49fb-be79-ec72abaf47b3","clientActivityId":"n34qnikvkil","tags":"ChannelId-lcw,FromCustomer"},{"created":"2023-10-21T13:12:11+00:00","isControlMessage":false,"content":"Leave as many messages as you’d like and we’ll get back to you as soon as possible. We’ll save your chat history, so you can leave and come back anytime.","contentType":"text","createdDateTime":"2023-10-21T13:12:11+00:00","deleted":false,"from":{"user":{"displayName":"","id":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_00000011-96b1-f18c-3dfe-9c3a0d007284"}},"attachments":[],"id":"1697893931967","tags":"system,persistentagentassignment","fromUserId":"8:acs:4c16003e-75ab-4747-b30c-557edd84758e_0000001b-f11f-4a28-6763-563a0d00b45e"},{"created":"2023-10-21T07:57:57+00:00","isControlMessage":true,"content":"<historydisclosedupdate><eventtime>1697875077315</eventtime></historydisclosedupdate>","createdDateTime":"2023-10-21T07:57:57+00:00","deleted":false,"id":"1697875077315"},{"created":"2023-10-21T07:57:57+00:00","isControlMessage":true,"content":"<addmember><eventtime>1697875077263</eventtime></addmember>","createdDateTime":"2023-10-21T07:57:57+00:00","deleted":false,"id":"1697875077263"}];
+                    const disableMarkdownMessageFormatting = false;
+                    const disableNewLineMarkdownSupport = false;
+                </script>
+                <script>
+                    class Translator {
+                        static convertTranscriptMessageToActivity(message) {
+                            const {created, OriginalMessageId, id, isControlMessage, content, tags, from, attachments, amsMetadata, amsReferences} = message;
+                            
+                            //it's required to convert the id to a number, otherwise the webchat will not render the messages in the correct order
+                            // if the OrginalMessageId is not present, we can use the id as the sequence id, which is always present.
+                            
+                            const webchatSequenceId = Translator.convertStringValueToInt(OriginalMessageId) || Translator.convertStringValueToInt(id);
+                            
+                            const activity = {
+                                from: {
+                                    role: 'bot'
+                                },
+                                type: 'message'
+                            };
+
+                            // Ignore control messages
+                            if (isControlMessage) {
+                                return false;
+                            }
+
+                            if (tags) {
+                                const formattedTags = tags.split(',');
+
+                                // Ignore system message
+                                if (formattedTags.includes('system')) {
+                                    return false;
+                                }
+
+                                // Ignore hidden message
+                                if (formattedTags.includes('Hidden')) {
+                                    return false;
+                                }
+                            }
+
+                            // Add C1 user display name
+                            if (from && from.user && from.user.displayName) {
+                                activity.from.name = from.user.displayName;
+                            }
+
+                            // Add C2 user display name
+                            if (from && from.application && from.application.displayName && from.application.displayName === 'Customer') {
+                                activity.from = {
+                                    role: 'user',
+                                    name: from.application.displayName
+                                };
+                            }
+
+                            // Attachments
+                            if (amsReferences && amsMetadata) {
+                                const metadata = JSON.parse(amsMetadata);
+                                const { fileName } = metadata[0];
+                                const text = `The following attachment was uploaded during the conversation: ${fileName}`;
+
+                                if (message.attachments && message.attachments.length > 0 && message.contentUrl) {
+                                    activity.attachments = message.attachments;
+                                    activity.attachments[0].contentUrl = message.contentUrl;
+                                    activity.attachments[0].thumbnailUrl =  message.contentUrl;
+                                };
+
+                                return {
+                                    ...activity,
+                                    text,
+                                    timestamp: created,
+                                    channelData: { 
+                                        "webchat:sequence-id": webchatSequenceId
+                                    }
+                                }
+                            }
+
+                            // Message
+                            if (content) {
+                                // Adaptive card formatting
+                                if (content.includes('"text"') && content.includes('"attachments"') && content.includes('"suggestedActions"')) {
+                                    try {
+                                        const partialActivity = JSON.parse(content);
+                                        return {
+                                            ...activity,
+                                            ...partialActivity,
+                                            timestamp: created,
+                                            channelData: { 
+                                                "webchat:sequence-id": webchatSequenceId
+                                            }
+                                        };
+                                    } catch {
+
+                                    }
+                                }
+                            }
+
+                            return {
+                                ...activity,
+                                text: content,
+                                timestamp: created,
+                                channelData: { 
+                                    "webchat:sequence-id": webchatSequenceId
+                                }
+                            };
+                        }
+                        
+                        static convertStringValueToInt(value) {
+                            if (typeof value !== "string" || value === "") {
+                                return undefined;
+                            }
+
+                            const result = parseInt(value);
+                            return isNaN(result) ? undefined : result;
+                        }
+                    }
+                </script>
+                <script>
+                    class TranscriptAdapter {
+                        constructor() {
+                            this.connectionStatus$ = new window.rxjs.BehaviorSubject(0); // Uninitialized
+                            this.activity$ = shareObservable(new Observable((observer) => {
+                                this.activityObserver = observer;
+
+                                this.connectionStatus$.next(1); // Connecting
+                                this.connectionStatus$.next(2); // Online
+
+                                // Retrieve messages
+                                if (messages) {
+                                    setTimeout(() => { // setTimeout is needed due to some WebChat issues
+                                        messages.map((message) => {
+                                            this.activityObserver.next({
+                                                ...Translator.convertTranscriptMessageToActivity(message),
+                                                type: 'message'
+                                            });
+                                        });
+                                    }, 1);
+                                }
+                            }));
+                        }
+                    }
+                </script>
+                <style>
+                    body {
+                        margin: 0;
+                    }
+
+                    .message-name {
+                        font-family: Segoe UI,SegoeUI,Helvetica Neue,Helvetica,Arial,sans-serif;
+                        font-weight: 700;
+                        font-size: 10px;
+                    }
+
+                    .message-timestamp {
+                        font-family: Segoe UI,SegoeUI,Helvetica Neue,Helvetica,Arial,sans-serif;
+                        font-weight: 500;
+                        font-size: 10px;
+                    }
+
+                    .avatar {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        text-align: center;
+                    }
+
+                    .avatar--bot {
+                        background-color: #315FA2;
+                    }
+
+                    .avatar--user {
+                        background-color: White;
+                    }
+
+                    .avatar > p {
+                        font-weight: 600;
+                        text-align: center;
+                        line-height: 0.5;
+                        font-family: "Segoe UI", Arial, sans-serif;
+                    }
+
+                    .avatar--bot > p {
+                        color: White;
+                    }
+
+                    .avatar--user > p {
+                        color: Black;
+                    }
+
+                    .webchat__bubble__content>div.ms_lcw_webchat_adaptive_card {
+                        background-color: #FFF;
+                    }
+
+                    div[class="ac-textBlock"] {
+                        color: #000 !important;
+                    }
+
+                    .ms_lcw_webchat_received_message a:link, .ms_lcw_webchat_received_message a:visited, .ms_lcw_webchat_received_message a:hover, .ms_lcw_webchat_received_message a:active {
+                        color: #FFF;
+                    }
+                </style>
+            </head>
+        
+                
+            <body>
+                <script>
+                    if (!navigator.onLine) {
+                        const offlineText = `Network Error. Please make sure you are connected to the internet.`;
+                        document.body.innerHTML = offlineText;
+                    }
+
+                    window.addEventListener("online", () => {
+                        document.body.innerHTML = `Connection restored. Please refresh the page <button onclick="window.location.reload()"> Refresh </button>`;
+                    });
+                </script>
+                <div id="transcript"></div>
+                <script>
+                    const getIconText = (text) => {
+                        if (text) {
+                            const initials = text.split(/\s/).reduce((response, word) => response += word.slice(0, 1), '');
+                            if (initials.length > 1) {
+                                return initials.substring(0, 2).toUpperCase();
+                            } else {
+                                return text.substring(0, 2).toUpperCase();
+                            }
+                        }
+
+                        return "";
+                    }
+
+                    const activityMiddleware = () => (next) => (...args) => {
+                        const [card] = args;
+
+                        if (card.activity) {
+                            if (card.activity.from && card.activity.from.role === "channel") {
+                                return () => false;
+                            }
+
+                            // Incoming text message
+                            if (card.activity.text && card.activity.from && card.activity.from.role !== "user") {
+                                return (...renderArgs) => (React.createElement(
+                                    'div',
+                                    {className: 'ms_lcw_webchat_received_message'},
+                                    next(...args)(...renderArgs)
+                                ))
+                            }
+                        }
+
+                        return next(...args);
+                    };
+
+                    const activityStatusMiddleware = () => (next) => (...args) => {
+                        const [card] = args;
+                        const {activity} = card;
+
+                        if (activity) {
+                            const {from, timestamp} = activity;
+
+                            const nameElement = React.createElement(
+                                'span',
+                                {className: 'message-name'},
+                                from.name
+                            );
+
+                            const formattedDate = new Date(timestamp);
+                            const formattedTimeString = formattedDate.toLocaleTimeString("en-us", { year: "numeric", month:"numeric", day:"numeric", hour: "2-digit", minute: "2-digit"});
+
+                            const timestampElement = React.createElement(
+                                'span',
+                                {className: 'message-timestamp'},
+                                formattedTimeString
+                            );
+
+                            return from.name && timestamp && React.createElement('span', null, nameElement, ' - ', timestampElement)
+                        }
+
+                        return next(...args);
+                    };
+
+                    const avatarMiddleware = () => (next) => (...args) => {
+                        const [card] = args;
+                        const {fromUser, activity} = card;
+                        const initials = getIconText(activity.from.name);
+
+                        const avatarElement = React.createElement(
+                            "div",
+                            {className: fromUser? "avatar avatar--user": "avatar avatar--bot"},
+                            React.createElement(
+                                "p",
+                                null,
+                                `${initials}`
+                            )
+                        );
+
+                        return avatarElement;
+                    }
+
+                    const attachmentMiddleware = () => (next) => (...args) => {
+                        const [card] = args;
+                        const {activity} = card;
+
+                        if (activity) {
+                            const { activity: { attachments }, attachment } = card;
+
+                            // No attachment
+                            if (!attachments || !attachments.length || !attachment) {
+                                return next(...args);
+                            }
+
+                            let { content, contentType } = attachment || { content: "", contentType: "" };
+
+                            // Adaptive card
+                            if (contentType.startsWith("application/vnd.microsoft.card")) {
+                                const adaptiveCardElement = React.createElement(
+                                    "div",
+                                    {className: 'ms_lcw_webchat_adaptive_card'},
+                                    next(...args)
+                                );
+
+                                return adaptiveCardElement;
+                            }
+                        }
+
+                        return next(...args);
+                    }
+
+                    const createMarkdown = (disableMarkdownMessageFormatting, disableNewLineMarkdownSupport) => {
+                        let markdown;
+                        if (!disableMarkdownMessageFormatting) {
+                            markdown = new window.markdownit(
+                                "default",
+                                {
+                                    html: true,
+                                    linkify: true,
+                                    breaks: (!disableNewLineMarkdownSupport)
+                                }
+                            );
+                        } else {
+                            markdown = new window.markdownit(
+                                "zero",
+                                {
+                                    html: true,
+                                    linkify: true,
+                                    breaks: (!disableNewLineMarkdownSupport)
+                                }
+                            );
+
+                            markdown.enable([
+                                "entity",
+                                "linkify",
+                                "html_block",
+                                "html_inline",
+                                "newline"
+                            ]);
+                        }
+
+                        return markdown;
+                    };
+
+                    const markdown = createMarkdown(disableMarkdownMessageFormatting, disableNewLineMarkdownSupport);
+                    const renderMarkdown = (text) => {
+                        const render = disableNewLineMarkdownSupport? markdown.renderInline.bind(markdown): markdown.render.bind(markdown);
+                        text = render(text);
+                        return text;
+                    };
+
+                    const adapter = new TranscriptAdapter();
+                    const styleOptions = {
+                        hideSendBox: true,
+                        backgroundColor: '#F7F7F9',
+                        bubbleBackground: '#315FA2',
+                        bubbleTextColor: 'White',
+                        bubbleBorderRadius: 12,
+                        bubbleNubSize: 1,
+                        bubbleFromUserBackground: 'White',
+                        bubbleFromUserTextColor: 'Black',
+                        bubbleFromUserBorderRadius: 12,
+                        bubbleFromUserNubSize: 1,
+                        botAvatarInitials: 'C1',
+                        userAvatarInitials: 'C2'
+                    };
+
+                    window.WebChat.renderWebChat({
+                        directLine: adapter,
+                        styleOptions,
+                        activityMiddleware,
+                        activityStatusMiddleware,
+                        avatarMiddleware,
+                        attachmentMiddleware,
+                        renderMarkdown
+                    },
+                    document.getElementById('transcript'));
+                </script>
+            </body>
+        
+            </html>
+        

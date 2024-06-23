@@ -1,0 +1,68 @@
+.formForTemplate{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    width: 100%;
+}
+.formForTemplate h1{
+    position: absolute;
+    z-index: 1000;
+    top: 5%;
+    font-size: 1.1rem;
+}
+.formForTemplate form {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 30vw;
+    max-width: 30vw;
+    background: #e5e5e5;
+    padding: 4.5rem 4.5rem 1.5rem 4.5rem;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.formForTemplate form input {
+    font-family: "Roboto", sans-serif;
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+    margin: 5px;
+}
+
+.formForTemplate form button {
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    padding: 1rem;
+    color: #7b7b7b;
+    font-size: 1.4rem;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.formForTemplate form button:hover{
+    background: #929c93;
+    color: #ffffff;
+}
+
+.notUpload{
+    color: red;
+    margin-top: 3%;
+}

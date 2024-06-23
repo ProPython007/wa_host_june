@@ -1,0 +1,30 @@
+PS C:\MAMP\htdocs\msgraph-training-php> php -v
+PHP 7.4.16 (cli) (built: Sep 24 2021 08:30:22) ( ZTS Visual C++ 2017 x64 )
+Copyright (c) The PHP Group
+Zend Engine v3.4.0, Copyright (c) Zend Technologies
+PS C:\MAMP\htdocs\msgraph-training-php> php main.php
+Could not open input file: main.php
+PS C:\MAMP\htdocs\msgraph-training-php> cd C:\MAMP\htdocs\msgraph-training-php\graphtutorial
+PS C:\MAMP\htdocs\msgraph-training-php\graphtutorial> php main.php
+PHP Graph Tutorial
+
+Error getting user: cURL error 60: SSL certificate problem: unable to get local issuer certificate (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://login.microsoftonline.com/common/oauth2/v2.0/devicecode
+
+Please choose one of the following options:
+0. Exit
+1. Display access token
+2. List my inbox
+3. Send mail
+4. List users (requires app-only)
+5. Make a Graph call
+PHP Fatal error:  Uncaught Error: Call to undefined function readline() in C:\MAMP\htdocs\msgraph-training-php\graphtutorial\main.php:36     
+Stack trace:
+#0 {main}
+  thrown in C:\MAMP\htdocs\msgraph-training-php\graphtutorial\main.php on line 36
+
+Fatal error: Uncaught Error: Call to undefined function readline() in C:\MAMP\htdocs\msgraph-training-php\graphtutorial\main.php:36
+Stack trace:
+#0 {main}
+  thrown in C:\MAMP\htdocs\msgraph-training-php\graphtutorial\main.php on line 36
+PS C:\MAMP\htdocs\msgraph-training-php\graphtutorial>
+

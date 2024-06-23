@@ -1,0 +1,27 @@
+.tick_font {
+    margin: 1px 7px;
+    opacity: 1;
+    display: flex;
+}
+
+.GreenTick {
+    color: #44c017;
+    font-weight: bold;
+}
+
+.WhiteTick {
+    color: rgb(130, 130, 130);
+}
+
+.BlueTick {
+    color: #2596be;
+    font-weight: bold;
+}
+
+.RedTick {
+    color: red;
+}
+
+.tickIcon{
+    font-size: 13rem;
+}
