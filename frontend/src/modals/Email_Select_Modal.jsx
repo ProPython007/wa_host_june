@@ -50,7 +50,6 @@ const emailData = [
     id: 11,
     name: 'info@casualfootwears.com'
   }
- 
 ];
 
 
