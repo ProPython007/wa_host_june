@@ -19,7 +19,7 @@ from rest_framework.permissions import AllowAny
 from .functions import *
 from .serializer import *
 from .models import *
-from business.custom_storages import CustomS3Boto3Storage
+# from business.custom_storages import CustomS3Boto3Storage
 import json
 import traceback
 import requests

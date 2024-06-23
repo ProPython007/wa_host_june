@@ -228,14 +228,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-AWS_ACCESS_KEY_ID = 'DO00K2LVXBQQ2EFM32ZZ'
-AWS_SECRET_ACCESS_KEY = 'Xw0Cjk+QmPPJyids8ayF8S5WUXyrTn58RAnbpY4jMsU'
-AWS_STORAGE_BUCKET_NAME = 'django-storge-app'  # Check if this matches your actual DigitalOcean Spaces bucket name
-AWS_S3_ENDPOINT_URL = 'https://blr1.digitaloceanspaces.com'
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-AWS_LOCATION = 'your-spaces-files-folder'  # Update this with the folder name in your bucket where static files are stored
+# AWS_ACCESS_KEY_ID = 'DO00K2LVXBQQ2EFM32ZZ'
+# AWS_SECRET_ACCESS_KEY = 'Xw0Cjk+QmPPJyids8ayF8S5WUXyrTn58RAnbpY4jMsU'
+# AWS_STORAGE_BUCKET_NAME = 'django-storge-app'  # Check if this matches your actual DigitalOcean Spaces bucket name
+# AWS_S3_ENDPOINT_URL = 'https://blr1.digitaloceanspaces.com'
+# AWS_S3_OBJECT_PARAMETERS = {
+#     'CacheControl': 'max-age=86400',
+# }
+# AWS_LOCATION = 'your-spaces-files-folder'  # Update this with the folder name in your bucket where static files are stored
 
 # STATIC_URL = 'https://%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_LOCATION)
 # STATIC_URL = f'{AWS_S3_ENDPOINT_URL}/static/'
@@ -249,6 +249,10 @@ STATICFILES_DIRS = [
 ]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Other Django settings...
 

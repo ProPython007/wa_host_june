@@ -6,36 +6,63 @@ import time
 import os
 from datetime import datetime
 import json
-from business.custom_storages import CustomS3Boto3Storage
-from django.core.files.base import ContentFile
+# from business.custom_storages import CustomS3Boto3Storage
+# from django.core.files.base import ContentFile
 #
 
 
 
-def upload_file_to_s3(file_path, bucket_path):
+# def upload_file_to_s3(file_path, bucket_path):
+#     # Open the file as a file-like object
+#     with open(file_path, 'rb') as file:
+#         file_content = file.read()
+
+#     # file_directory_within_bucket = f'whatsapp_media/{bucket_path}'
+#     # file_path_within_bucket = os.path.join(
+#     #     file_directory_within_bucket,
+#     #     os.path.basename(file_path)  # Use the file name as the object name within the bucket
+#     # )
+#     filename = os.path.basename(file_path)
+#     print(filename)
+
+#     # Use the filename directly as the object name within the bucket
+#     file_path_within_bucket = os.path.join(bucket_path, filename)
+
+#     print(file_path_within_bucket)
+#     media_storage = CustomS3Boto3Storage()
+
+#     # Save the file content to S3 using a Django ContentFile
+#     file_content_obj = ContentFile(file_content)
+#     media_storage.save(file_path_within_bucket, file_content_obj)
+
+#     file_url = media_storage.url(file_path_within_bucket)
+#     print(file_url)
+#     return file_url
+
+def upload_file_to_s3(file_path, static_path):
     # Open the file as a file-like object
     with open(file_path, 'rb') as file:
         file_content = file.read()
 
-    # file_directory_within_bucket = f'whatsapp_media/{bucket_path}'
-    # file_path_within_bucket = os.path.join(
-    #     file_directory_within_bucket,
-    #     os.path.basename(file_path)  # Use the file name as the object name within the bucket
-    # )
+    # Use the filename directly as the object name within the static directory
     filename = os.path.basename(file_path)
     print(filename)
 
-    # Use the filename directly as the object name within the bucket
-    file_path_within_bucket = os.path.join(bucket_path, filename)
+    # Create the directory if it doesn't exist
+    static_directory = os.path.join(settings.STATIC_ROOT, static_path)
+    os.makedirs(static_directory, exist_ok=True)
 
-    print(file_path_within_bucket)
-    media_storage = CustomS3Boto3Storage()
+    # Full file path within static storage
+    file_path_within_static = os.path.join(static_path, filename)
+    full_file_path = os.path.join(settings.STATIC_ROOT, file_path_within_static)
+    print(full_file_path)
 
-    # Save the file content to S3 using a Django ContentFile
-    file_content_obj = ContentFile(file_content)
-    media_storage.save(file_path_within_bucket, file_content_obj)
+    # Save the file content to the static file system
+    if not os.path.exists(full_file_path):  # avoid overwriting existing file
+        with open(full_file_path, 'wb') as static_file:
+            static_file.write(file_content)
 
-    file_url = media_storage.url(file_path_within_bucket)
+    file_url = os.path.join(settings.STATIC_URL, file_path_within_static)
     print(file_url)
     return file_url
 
