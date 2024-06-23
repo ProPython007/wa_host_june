@@ -268,14 +268,17 @@ class ReactViewv2(APIView):
 def home(request):
     # return HttpResponse("Hellaao Worldasas2")
     return render(request, "business/index.html")
+def chatroom_page(request):
+    # return HttpResponse("Hellaao Worldasas2")
+    return render(request, "business/chatroom_web/index.html")
 
 @csrf_exempt
 def send_message(request):
     if request.method == 'POST':
-        # Get data from the request and load it as JSON
+        # Get data from the request and load it as JSONP
         # data = json.loads(request.body.decode('utf-8'))
-        data = json.loads(request.body.decode('utf-8'), object_hook=lambda d: {k: v.encode('latin-1').decode('utf-8') if isinstance(v, str) else v for k, v in d.items()})
-           
+        # data = json.loads(request.body.decode('utf-8'), object_hook=lambda d: {k: v.encode('latin-1').decode('utf-8') if isinstance(v, str) else v for k, v in d.items()})
+        data = json.loads(request.body.decode('utf-8'), object_hook=lambda d: d) 
         # print(data)
         
         # Extract the data from the JSON
@@ -348,8 +351,8 @@ def whatsAppWebhook(request):
         target_file_path = os.path.join(target_directory, 'your_filename.txt')
 
         # Copy or move the source data to the target file
-        with open(target_file_path, 'ab') as target_file:
-            target_file.write(request.body)
+        # with open(target_file_path, 'ab') as target_file:
+        #     target_file.write(request.body)
 
         data = json.loads(request.body)
 

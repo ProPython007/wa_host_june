@@ -41,16 +41,7 @@ const emailData = [
   {
     id: 9,
     name: 'rohinishrim@gmail.com'
-  },
-  {
-    id: 10,
-    name: 'support@casualfootwears.com'
-  },
-  {
-    id: 11,
-    name: 'info@casualfootwears.com'
   }
- 
 ];
 
 
