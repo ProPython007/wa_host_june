@@ -703,28 +703,29 @@ def send_rest_template(request):
 
 from django.views import View
 from django.http import JsonResponse
+from django.core.files.storage import FileSystemStorage
 @api_view(['POST'])
 def FileUploadView(request):
     file_obj = request.FILES.get('media')
-    print(request)
-    file_directory_within_bucket = 'user_upload_files/{username}'.format(username="max")
+    if not file_obj:
+        return Response({'message': 'No file uploaded'}, status=status.HTTP_400_BAD_REQUEST)
 
-    # synthesize a full file path; note that we included the filename
-    file_path_within_bucket = os.path.join(
-        file_directory_within_bucket,
-        file_obj.name
-    )
-    media_storage = CustomS3Boto3Storage()
-    if not media_storage.exists(file_path_within_bucket): # avoid overwriting existing file
-            media_storage.save(file_path_within_bucket, file_obj)
-            file_url = media_storage.url(file_path_within_bucket)
-            print(file_url)
-            return JsonResponse({
-                'message': 'OK',
-                'fileUrl': file_url,
-            })
-    
-    return Response({'message': 'document uploaded successfully'}, status=status.HTTP_200_OK)
+    username = "max"
+    file_directory_within_staticfiles = os.path.join(settings.STATIC_ROOT, 'user_upload_files', username)
+
+    # Ensure the directory exists
+    if not os.path.exists(file_directory_within_staticfiles):
+        os.makedirs(file_directory_within_staticfiles)
+
+    file_path = os.path.join(file_directory_within_staticfiles, file_obj.name)
+    file_storage = FileSystemStorage(location=file_directory_within_staticfiles)
+
+    if not file_storage.exists(file_obj.name):  # avoid overwriting existing file
+        file_storage.save(file_obj.name, file_obj)
+        file_url = os.path.join(settings.STATIC_URL, 'user_upload_files', username, file_obj.name)
+        return JsonResponse({'message': 'OK', 'fileUrl': file_url})
+
+    return Response({'message': 'File already exists'}, status=status.HTTP_409_CONFLICT)
 
 
 
@@ -737,9 +738,7 @@ emails_data = {
     'mohanlal.lal1333@gmail.com': 'cvpb ways lhkr qhkr',
     'samirsheikhcool@gmail.com': 'uklc makd kbqv pwou',
     'samirkumar.rocks333@gmail.com': 'cqgp bjxp gphp jslp',
-    'rahul.mishra73333@gmail.com': 'mpqo gyhf oxbu fyuv',
-    'support@casualfootwears.com': '5yyKbc@[qnY&',
-    'info@casualfootwears.com': 'K}+s5nSDQOU;'
+    'rahul.mishra73333@gmail.com': 'mpqo gyhf oxbu fyuv'
 }
 
 @api_view(['GET'])
@@ -747,31 +746,52 @@ def fetch_inbox(request, q_email):
     mails = []
     q_email_pass = emails_data[q_email]
 
-    if q_email.split('@')[-1] == 'gmail.com':
-        mail_server = 'imap.gmail.com'
-        mail_folder = '[Gmail]/All Mail'
-    
-        with MailBox(mail_server).login(q_email, q_email_pass, mail_folder) as mailbox:
-            emails = mailbox.fetch(AND(all=True), reverse=True, limit=20)
-            emails = reversed(list(emails))
+    mail_server = 'imap.gmail.com'
+    mail_folder = '[Gmail]/All Mail'
 
-            email_dict = {}
-            for msg in emails:
-                if ('in-reply-to' in msg.headers):
-                    if msg.headers['in-reply-to'][0] in email_dict:
-                        email_dict[msg.headers['in-reply-to'][0]].append(msg)
-                    else:
-                        for k, v in email_dict.items():
-                            if msg.headers['in-reply-to'][0] in [val.headers['message-id'][0] for val in v]:
-                                email_dict[k].append(msg)
-                    
+    with MailBox(mail_server).login(q_email, q_email_pass, mail_folder) as mailbox:
+        emails = mailbox.fetch(AND(all=True), reverse=True, limit=20)
+        emails = reversed(list(emails))
+
+        email_dict = {}
+        for msg in emails:
+            if ('in-reply-to' in msg.headers):
+                if msg.headers['in-reply-to'][0] in email_dict:
+                    email_dict[msg.headers['in-reply-to'][0]].append(msg)
                 else:
-                    email_dict[msg.headers['message-id'][0]] = [msg]
+                    for k, v in email_dict.items():
+                        if msg.headers['in-reply-to'][0] in [val.headers['message-id'][0] for val in v]:
+                            email_dict[k].append(msg)
+                
+            else:
+                email_dict[msg.headers['message-id'][0]] = [msg]
 
-            for thread_id, msgs in email_dict.items():
-                for i, msg in enumerate(msgs):
-                    if i == 0:
-                        email_data = {
+        for thread_id, msgs in email_dict.items():
+            for i, msg in enumerate(msgs):
+                if i == 0:
+                    email_data = {
+                        "thread_id": thread_id,
+                        "email_id": msg.uid,
+                        "from": msg.from_,
+                        "subject": msg.subject,
+                        "date": msg.date.strftime('%Y-%m-%d %H:%M:%S'),
+                        "to": msg.to,
+                        "cc": msg.cc,
+                        "bcc": msg.bcc,
+                        "body": msg.text or msg.html,
+                        "attachments": [{
+                            "filename": att.filename,
+                            "content_type": att.content_type,
+                            "size": att.size,
+                            "content": base64.b64encode(att.payload).decode('utf-8')
+                        } for att in msg.attachments],
+                        "replies": []
+                    }
+                    mails.append(email_data)
+                
+                else:
+                    mails[-1]["replies"].append(
+                        {
                             "thread_id": thread_id,
                             "email_id": msg.uid,
                             "from": msg.from_,
@@ -789,59 +809,7 @@ def fetch_inbox(request, q_email):
                             } for att in msg.attachments],
                             "replies": []
                         }
-                        mails.append(email_data)
-                    
-                    else:
-                        mails[-1]["replies"].append(
-                            {
-                                "thread_id": thread_id,
-                                "email_id": msg.uid,
-                                "from": msg.from_,
-                                "subject": msg.subject,
-                                "date": msg.date.strftime('%Y-%m-%d %H:%M:%S'),
-                                "to": msg.to,
-                                "cc": msg.cc,
-                                "bcc": msg.bcc,
-                                "body": msg.text or msg.html,
-                                "attachments": [{
-                                    "filename": att.filename,
-                                    "content_type": att.content_type,
-                                    "size": att.size,
-                                    "content": base64.b64encode(att.payload).decode('utf-8')
-                                } for att in msg.attachments],
-                                "replies": []
-                            }
-                        )
-            
-    else:
-        mail_server = 'casualfootwears.com'
-        mail_folder = 'INBOX'
-
-        with MailBox(mail_server).login(q_email, q_email_pass, 'INBOX') as mailbox:
-            emails = mailbox.fetch(AND(all=True), reverse=True, limit=20)
-            emails = reversed(list(emails))
-
-            email_dict = {}
-            for msg in emails:
-                email_data = {
-                            "thread_id": "",
-                            "email_id": msg.uid,
-                            "from": msg.from_,
-                            "subject": msg.subject,
-                            "date": msg.date.strftime('%Y-%m-%d %H:%M:%S'),
-                            "to": msg.to,
-                            "cc": msg.cc,
-                            "bcc": msg.bcc,
-                            "body": msg.text or msg.html,
-                            "attachments": [{
-                                "filename": att.filename,
-                                "content_type": att.content_type,
-                                "size": att.size,
-                                "content": base64.b64encode(att.payload).decode('utf-8')
-                            } for att in msg.attachments],
-                            "replies": []
-                        }
-                mails.append(email_data)
+                    )
 
     mails = mails[::-1]
     return Response(mails)
@@ -859,16 +827,10 @@ def reply_mail(request):
         # IMAP configuration
         imap_user = q_email
         imap_pass = q_email_pass
-        if q_email.split('@')[-1] == 'gmail.com':
-            imap_host = 'imap.gmail.com'
-            smtp_host = 'smtp.gmail.com'
-            smtp_port = 587
-            mail_folder = '[Gmail]/All Mail'
-        else:
-            imap_host = 'casualfootwears.com'
-            smtp_host = 'casualfootwears.com'
-            smtp_port = 465
-            mail_folder = 'INBOX'
+        imap_host = 'imap.gmail.com'
+        smtp_host = 'smtp.gmail.com'
+        smtp_port = 587
+        mail_folder = '[Gmail]/All Mail'
 
         with MailBox(imap_host).login(imap_user, imap_pass, mail_folder) as mailbox:
             pa_email = mailbox.fetch(AND(uid=p_uid))
@@ -876,11 +838,13 @@ def reply_mail(request):
 
             target_subject = parent_email.subject
             target_from = parent_email.from_
-            target_message_id = p_uid
+            target_message_id = parent_email.headers['message-id'][0]
+
+            # print(target_subject, target_from, target_message_id)
 
             # Create the reply email
             reply = MIMEMultipart()
-            reply['Subject'] = f"Re: {target_subject}"
+            reply['Subject'] = f"{target_subject}"
             reply['From'] = imap_user
             reply['To'] = target_from
             reply['in-reply-to'] = target_message_id
