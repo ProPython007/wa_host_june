@@ -35,7 +35,7 @@ function Compose_Email({
   useEffect(() => {
     //  userData2 && sknekne nejm(userData2.orders.map((item) => item.tracking_number));
     const first_num =
-      (Array.isArray(tracking_num) && tracking_num[0].slice(0, 1)) || "";
+      (Array.isArray(tracking_num) && tracking_num.length !== 0 && tracking_num[0].slice(0, 1)) || "";
     const latest_num = (Array.isArray(tracking_num) && tracking_num[0]) || "";
     if (data_emails.includes(email)) {
       if (first_num === "1" || first_num === "3") {
