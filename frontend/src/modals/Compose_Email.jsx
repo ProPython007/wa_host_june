@@ -62,7 +62,7 @@ function Compose_Email({
     setFrom(email);
     setBody(`Parcel not delivered AWB ${tracking_num}
 
-Why not deliverin this parcel AWB ${tracking_num}.\n`);
+Why not delivering this parcel AWB ${tracking_num}.\n`);
   }, [email, tracking_num]);
 
   const handleFileChange = (e) => {
