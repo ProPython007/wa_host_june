@@ -12,13 +12,10 @@ import OpenDialogBox from "./OpenDialogBox";
 import { GlobalVariablesContext } from "../../../GlobalVariables";
 import FormForTemplate from "./FormForTemplate";
 
-
 import Email_Select_Modal from "../../../modals/Email_Select_Modal";
 import Email_Modal from "../../../modals/Email_Modal";
 import Reply_Email from "../../../modals/Reply_Email";
 import Compose_Email from "../../../modals/Compose_Email";
-
-
 
 function Header() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -28,76 +25,76 @@ function Header() {
   const [forForm, setForForm] = useState({});
   const { userData2 } = useContext(GlobalVariablesContext);
   // -------------------------------------------------------------------------------
-  const [selectedEmail, setSelectedEmail] = useState('');
+  const [selectedEmail, setSelectedEmail] = useState("");
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
-  const [composEmail, setComposEmail] = useState('');
+  const [composEmail, setComposEmail] = useState("");
   const [open4, setOpen4] = useState(false);
   const [emails, setEmails] = useState([]);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [replyEmail, setReplyEmail] = useState({});
   const [tracking_num, setTracking_num] = useState({});
-  
+  const [slected_num, setSelectedNum] = useState("");
 
   useEffect(() => {
     if (userData2) {
       setTracking_num(userData2.orders.map((item) => item.tracking_number));
     }
-  }, [userData2]);
-
+    const num =
+      currentUser.phone.length >= 12
+        ? currentUser.phone.slice(2)
+        : currentUser.phone;
+    setSelectedNum(num);
+  }, [userData2, currentUser]);
 
   const handleClose = () => {
     setOpen(false);
     setOpen2(false);
     setEmails([]);
-  }
+  };
 
   const handleOpen = () => {
-   
     setOpen(true);
-  }
+    setOpen2(false);
+    setOpen3(false);
+    setOpen4(false);
+  };
 
-
-  const handleSelectEmail = async(email ) => {
-   
-    
+  const handleSelectEmail = async (email) => {
     setEmails([]);
-    // setLoader(true);
-  //   const baseUrl =  process.env.FETCH_API_DATA;
-  //  let xyz =  `${baseUrl}/${email}`;
-  // console.log(process.env.FETCH_API_DATA,email);
-    
+
+
     try {
       setOpen2(true);
-      setOpen(false);  
-      const response = await axios.get(`${process.env.REACT_APP_FETCH_API_DATA}${email}`);
+      setOpen(false);
+      setOpen3(false);
+      const response = await axios.get(
+        `${process.env.REACT_APP_FETCH_API_DATA}${email}`
+      );
       setEmails(response.data);
       setEmail(email);
       toast.success("Email fetched successfully");
       // setLoader(false);
-
     } catch (error) {
       setOpen2(false);
       toast.error("Failed to fetch email");
     }
-  }
+  };
 
   const handleReply = (email) => {
     setOpen3(true);
     setOpen2(false);
     setReplyEmail(email);
-
-  }
+  };
 
   const handleComposeEmail = (email) => {
     setOpen(false);
     setOpen2(false);
     setOpen4(true);
     setSelectedEmail(email);
-  }
+  };
   // Modals and functions END
-
 
   // -------------------------------------------------------------------------------
 
@@ -253,11 +250,55 @@ function Header() {
             </span>
           </div>
         )}
-       <button onClick={handleOpen}  style={{ marginRight:"30px" ,  border:"none" , backgroundColor:"#90EE90" , borderRadius:"5px", padding:"12px 12px", color:"black" , fontWeight:"bold", cursor:"pointer"}}>Notification</button>
-          <Email_Select_Modal open={open} handleSelectEmail={handleSelectEmail} handleClose={handleClose} handleComposeEmail={handleComposeEmail}  />
-          <Email_Modal open2={open2} handleClose={handleClose} email={email}  emails={emails} handleReply={handleReply} handleComposeEmail={handleComposeEmail} handleSelectEmail={handleSelectEmail} />
-          <Reply_Email open3={open3} tracking_num={tracking_num} email={replyEmail} selectedEm={email} setOpen3={setOpen3} />
-          <Compose_Email open4={open4} email={selectedEmail} setOpen4={setOpen4} tracking_num={tracking_num} />
+        <button
+          onClick={handleOpen}
+          style={{
+            marginRight: "30px",
+            border: "none",
+            backgroundColor: "#90EE90",
+            borderRadius: "5px",
+            padding: "12px 12px",
+            color: "black",
+            fontWeight: "bold",
+            cursor: "pointer",
+          }}
+        >
+          Notification
+        </button>
+        <Email_Select_Modal
+          slected_num={slected_num}
+          open={open}
+          handleSelectEmail={handleSelectEmail}
+          handleClose={handleClose}
+          handleComposeEmail={handleComposeEmail}
+        />
+        <Email_Modal
+          open2={open2}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          email={email}
+          emails={emails}
+          handleReply={handleReply}
+          handleComposeEmail={handleComposeEmail}
+          handleSelectEmail={handleSelectEmail}
+        />
+        <Reply_Email
+          open3={open3}
+          slected_num={slected_num}
+          tracking_num={tracking_num}
+          email={replyEmail}
+          selectedEm={email}
+          setOpen3={setOpen3}
+          handleSelectEmail={handleSelectEmail}
+        />
+        <Compose_Email
+          open4={open4}
+          slected_num={slected_num}
+          handleOpen={handleOpen}
+          email={selectedEmail}
+          setOpen4={setOpen4}
+          tracking_num={tracking_num}
+        />
         <LibraryBooksIcon
           onClick={() => setIsShowTemplateList(!isShowTemplateList)}
         />

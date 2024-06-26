@@ -21,6 +21,9 @@ path('fetch_mails/<str:q_email>', views.fetch_inbox, name='fetch_mails'),
 path('reply_mail/', views.reply_mail, name='reply_mail'),
 path('reply_mail_alone/', views.reply_mail_standalone, name='reply_mail_standalone'),
 
+path('get_last_mail/<str:user_phnum>', views.get_last_mail, name='get_last_mail'),
+path('set_last_mail/', views.set_last_mail, name='set_last_mail'),
+
 # path('send_rest_template', views., name = 'whatsapp-webhook-msg-seen-update'),
 
 

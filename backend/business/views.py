@@ -19,7 +19,7 @@ from rest_framework.permissions import AllowAny
 from .functions import *
 from .serializer import *
 from .models import *
-# from business.custom_storages import CustomS3Boto3Storage
+from business.custom_storages import CustomS3Boto3Storage
 import json
 import traceback
 import requests
@@ -268,17 +268,14 @@ class ReactViewv2(APIView):
 def home(request):
     # return HttpResponse("Hellaao Worldasas2")
     return render(request, "business/index.html")
-def chatroom_page(request):
-    # return HttpResponse("Hellaao Worldasas2")
-    return render(request, "business/chatroom_web/index.html")
 
 @csrf_exempt
 def send_message(request):
     if request.method == 'POST':
-        # Get data from the request and load it as JSONP
+        # Get data from the request and load it as JSON
         # data = json.loads(request.body.decode('utf-8'))
-        # data = json.loads(request.body.decode('utf-8'), object_hook=lambda d: {k: v.encode('latin-1').decode('utf-8') if isinstance(v, str) else v for k, v in d.items()})
-        data = json.loads(request.body.decode('utf-8'), object_hook=lambda d: d) 
+        data = json.loads(request.body.decode('utf-8'), object_hook=lambda d: {k: v.encode('latin-1').decode('utf-8') if isinstance(v, str) else v for k, v in d.items()})
+           
         # print(data)
         
         # Extract the data from the JSON
@@ -351,8 +348,8 @@ def whatsAppWebhook(request):
         target_file_path = os.path.join(target_directory, 'your_filename.txt')
 
         # Copy or move the source data to the target file
-        # with open(target_file_path, 'ab') as target_file:
-        #     target_file.write(request.body)
+        with open(target_file_path, 'ab') as target_file:
+            target_file.write(request.body)
 
         data = json.loads(request.body)
 
@@ -703,30 +700,28 @@ def send_rest_template(request):
 
 from django.views import View
 from django.http import JsonResponse
-from django.core.files.storage import FileSystemStorage
 @api_view(['POST'])
 def FileUploadView(request):
     file_obj = request.FILES.get('media')
-    if not file_obj:
-        return Response({'message': 'No file uploaded'}, status=status.HTTP_400_BAD_REQUEST)
+    print(request)
+    file_directory_within_bucket = 'user_upload_files/{username}'.format(username="max")
 
-    username = "max"
-    file_directory_within_staticfiles = os.path.join(settings.STATIC_ROOT, 'user_upload_files', username)
-
-    # Ensure the directory exists
-    if not os.path.exists(file_directory_within_staticfiles):
-        os.makedirs(file_directory_within_staticfiles)
-
-    file_path = os.path.join(file_directory_within_staticfiles, file_obj.name)
-    file_storage = FileSystemStorage(location=file_directory_within_staticfiles)
-
-    if not file_storage.exists(file_obj.name):  # avoid overwriting existing file
-        file_storage.save(file_obj.name, file_obj)
-        file_url = os.path.join(settings.STATIC_URL, 'user_upload_files', username, file_obj.name)
-        return JsonResponse({'message': 'OK', 'fileUrl': file_url})
-
-    return Response({'message': 'File already exists'}, status=status.HTTP_409_CONFLICT)
-
+    # synthesize a full file path; note that we included the filename
+    file_path_within_bucket = os.path.join(
+        file_directory_within_bucket,
+        file_obj.name
+    )
+    media_storage = CustomS3Boto3Storage()
+    if not media_storage.exists(file_path_within_bucket): # avoid overwriting existing file
+            media_storage.save(file_path_within_bucket, file_obj)
+            file_url = media_storage.url(file_path_within_bucket)
+            print(file_url)
+            return JsonResponse({
+                'message': 'OK',
+                'fileUrl': file_url,
+            })
+    
+    return Response({'message': 'document uploaded successfully'}, status=status.HTTP_200_OK)
 
 
 emails_data = {
@@ -934,4 +929,47 @@ def reply_mail_standalone(request):
         finally:
             server.quit()
 
+    return Response(response)
+
+
+@api_view(['GET'])
+def get_last_mail(request, user_phnum):
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    JSON_FILE_PATH = os.path.join(BASE_DIR, 'last_mail_lookup.json')
+    
+    with open(JSON_FILE_PATH, 'r') as f:
+        lookup = json.load(f)
+    lookup = dict(lookup)
+
+    if str(user_phnum) in lookup:
+        response = {f'{user_phnum}': f'{lookup[user_phnum]}'}
+    else:
+        response = {f'{user_phnum}': ''}
+    
+    return JsonResponse(response)
+
+
+
+@api_view(['POST'])
+def set_last_mail(request):
+    response = []
+    if request.method == 'POST':
+        new_data = dict(request.data)
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        JSON_FILE_PATH = os.path.join(BASE_DIR, 'last_mail_lookup.json')
+        
+        try:
+            with open(JSON_FILE_PATH, 'r') as f:
+                lookup = json.load(f)
+            lookup = dict(lookup)
+            lookup.update(new_data)
+        
+            with open(JSON_FILE_PATH, 'w') as json_file:
+                json.dump(lookup, json_file)
+
+            response.append({'msg': 'save success!'})
+        
+        except Exception as err:
+            response.append({'msg': f'save un-success {err}!'})
+        
     return Response(response)
