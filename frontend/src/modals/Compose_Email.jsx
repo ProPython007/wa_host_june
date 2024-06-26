@@ -33,14 +33,6 @@ function Compose_Email({
 
 
   useEffect(() => {
-
-    setSubject("");
-    setBody("");
-    setAttachments([]);
-    setCC("");
-    setFrom("");
-    setTo("");
-
     //  userData2 && sknekne nejm(userData2.orders.map((item) => item.tracking_number));
     const first_num =
       (Array.isArray(tracking_num) && tracking_num.length !== 0 && typeof tracking_num[0] === 'string' && tracking_num[0].slice(0, 1)) || "";

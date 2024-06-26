@@ -41,6 +41,9 @@ function Header() {
     if (userData2) {
       setTracking_num(userData2.orders.map((item) => item.tracking_number));
     }
+    else {
+      setTracking_num({})
+    }
     const num =
       currentUser.phone.length >= 12
         ? currentUser.phone.slice(2)
