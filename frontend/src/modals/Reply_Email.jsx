@@ -25,7 +25,8 @@ function Reply_Email({
 
   
 
-  const handleFileChange = (files) => {
+  const handleFileChange = (e) => {
+    const files = e.target.files;
     setAttachments([...attachments, ...files]);
   };
 
@@ -100,23 +101,12 @@ function Reply_Email({
         <div className="form-group">
           <label>Attachments</label>
           <div className="files">
-            <Files
-              className="files-dropzone"
-              onChange={handleFileChange}
-              accepts={["image/png", ".pdf", "audio/*"]}
+            <input
+              type="file"
               multiple
-              maxFileSize={10000000}
-              minFileSize={0}
-              clickable
-            >
-              <div className="files-upload-area">
-                <MdCloudUpload
-                  style={{ fontSize: "40px", marginBottom: "10px" }}
-                />
-                <p>Drag and drop files here or</p>
-                <p>click to select files</p>
-              </div>
-            </Files>
+              accept="image/*,.pdf"
+              onChange={handleFileChange}
+            />
           </div>
         </div>
         {loading ? (
