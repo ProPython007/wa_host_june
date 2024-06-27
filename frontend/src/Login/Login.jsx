@@ -11,7 +11,7 @@ function Login({ setIsLoggedIn }) {
 
   const login = (e) => {
     e.preventDefault();
-    if (username == "ayaan" && password == "ayaan") {
+    if (username == "admin" && password == "shoe#80") {
        localStorage.setItem("isLoggedIn", true);
        setIsLoggedIn(true);
     }
