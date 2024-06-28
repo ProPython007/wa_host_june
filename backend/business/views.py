@@ -745,7 +745,7 @@ def fetch_inbox(request, q_email):
     mail_folder = '[Gmail]/All Mail'
 
     with MailBox(mail_server).login(q_email, q_email_pass, mail_folder) as mailbox:
-        emails = mailbox.fetch(AND(all=True), reverse=True, limit=20)
+        emails = mailbox.fetch(AND(all=True), reverse=True, limit=10)
         emails = reversed(list(emails))
 
         email_dict = {}
