@@ -70,9 +70,8 @@ function Reply_Email({
 
   useEffect(() => {
     setTo(selectedEm);
-    const temp_latest_num = (Array.isArray(tracking_num) && tracking_num[0]) || "";
     setBody(
-      `Parcel not delivered AWB ${temp_latest_num}\n\nWhy not delivering this parcel AWB ${temp_latest_num}.\n`
+      `Parcel not delivered AWB ${tracking_num}\n\nWhy not delivering this parcel AWB ${tracking_num}.\n`
     );
   }, [selectedEm, tracking_num]);
 
